@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Robert | Front-End Journey</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+          "Segoe UI", sans-serif;
+        background: #f5f5f7;
+        color: #1d1d1f;
+        overflow-x: hidden;
+      }
+
+      .hero {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 40px 20px;
+        text-align: center;
+        background:
+          radial-gradient(circle at 50% 10%, rgba(0, 113, 227, 0.18), transparent 35%),
+          radial-gradient(circle at 20% 80%, rgba(175, 82, 222, 0.18), transparent 32%),
+          #f5f5f7;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .orb {
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        filter: blur(30px);
+        opacity: 0.35;
+        animation: float 7s ease-in-out infinite;
+      }
+
+      .orb.one {
+        background: #007aff;
+        top: 12%;
+        left: 10%;
+      }
+
+      .orb.two {
+        background: #af52de;
+        bottom: 12%;
+        right: 10%;
+        animation-delay: 1.5s;
+      }
+
+      .hero-content {
+        max-width: 900px;
+        position: relative;
+        z-index: 2;
+        animation: heroIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 9px 16px;
+        margin-bottom: 26px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(24px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        font-size: 14px;
+        color: #6e6e73;
+      }
+
+      h1 {
+        font-size: clamp(56px, 9vw, 112px);
+        line-height: 0.95;
+        margin: 0;
+        letter-spacing: -5px;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #007aff, #af52de, #ff2d55);
+        -webkit-background-clip: text;
+        color: transparent;
+        background-size: 200%;
+        animation: gradientMove 5s ease infinite alternate;
+      }
+
+      .subtitle {
+        max-width: 720px;
+        margin: 30px auto;
+        font-size: clamp(21px, 3vw, 30px);
+        line-height: 1.35;
+        color: #6e6e73;
+      }
+
+      .cta {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 15px 26px;
+        border-radius: 999px;
+        background: #0071e3;
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .cta:hover {
+        transform: translateY(-4px) scale(1.03);
+        box-shadow: 0 18px 38px rgba(0, 113, 227, 0.35);
+      }
+
+      .scroll-hint {
+        position: absolute;
+        bottom: 30px;
+        font-size: 13px;
+        color: #86868b;
+        animation: bounce 1.8s ease-in-out infinite;
+      }
+
+      section {
+        min-height: 100vh;
+        padding: 120px 20px;
+      }
+
+      .section-inner {
+        max-width: 1120px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        font-size: clamp(42px, 6vw, 72px);
+        letter-spacing: -3px;
+        margin-bottom: 50px;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .big-text {
+        font-size: clamp(34px, 5vw, 64px);
+        line-height: 1.05;
+        letter-spacing: -3px;
+        margin: 0;
+      }
+
+      .muted {
+        color: #6e6e73;
+        font-size: 21px;
+        line-height: 1.6;
+      }
+
+      .glass {
+        border-radius: 36px;
+        padding: 34px;
+        background: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(28px);
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.08);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+      }
+
+      .card {
+        min-height: 260px;
+        padding: 30px;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(25px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 35px 80px rgba(0, 0, 0, 0.12);
+      }
+
+      .card h3 {
+        font-size: 28px;
+        margin-top: 0;
+      }
+
+      .card p {
+        color: #6e6e73;
+        line-height: 1.6;
+      }
+
+      .dark-panel {
+        margin-top: 80px;
+        padding: 56px;
+        border-radius: 42px;
+        color: white;
+        background:
+          radial-gradient(circle at top left, rgba(0, 122, 255, 0.4), transparent 34%),
+          radial-gradient(circle at bottom right, rgba(175, 82, 222, 0.35), transparent 30%),
+          #111;
+        box-shadow: 0 35px 90px rgba(0, 0, 0, 0.3);
+      }
+
+      .dark-panel p {
+        color: #d2d2d7;
+        font-size: 22px;
+        line-height: 1.6;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 18px;
+        margin-top: 30px;
+      }
+
+      .timeline-item {
+        padding: 22px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.75);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+      }
+
+      .timeline-item span {
+        color: #0071e3;
+        font-weight: 700;
+      }
+
+      .final-section {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at center, rgba(0, 113, 227, 0.08), transparent 35%),
+          #f5f5f7;
+      }
+
+      .mystery-button {
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 18px 34px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.75);
+        color: #1d1d1f;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        backdrop-filter: blur(24px);
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.12);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+      }
+
+      .mystery-button:hover {
+        transform: translateY(-4px) scale(1.03);
+        box-shadow: 0 35px 90px rgba(0, 0, 0, 0.16);
+      }
+
+      .experience-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(circle at center, rgba(0, 113, 227, 0.18), transparent 32%),
+          rgba(5, 5, 7, 0.92);
+        backdrop-filter: blur(30px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .experience-overlay.active {
+        opacity: 1;
+      }
+
+      .experience-card {
+        max-width: 760px;
+        text-align: center;
+        color: white;
+        transform: translateY(30px) scale(0.96);
+        opacity: 0;
+        transition:
+          transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .experience-overlay.active .experience-card {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+
+      .experience-label {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #86868b;
+        font-size: 14px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .experience-card h2 {
+        margin: 0;
+        font-size: clamp(48px, 8vw, 96px);
+        line-height: 0.95;
+        letter-spacing: -4px;
+      }
+
+      .experience-card p {
+        max-width: 620px;
+        margin: 28px auto 0;
+        color: #d2d2d7;
+        font-size: clamp(20px, 3vw, 28px);
+        line-height: 1.35;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(70px) scale(0.96);
+        filter: blur(12px);
+        transition:
+          opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 1s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+
+      .delay-1 {
+        transition-delay: 0.12s;
+      }
+
+      .delay-2 {
+        transition-delay: 0.24s;
+      }
+
+      .delay-3 {
+        transition-delay: 0.36s;
+      }
+
+      @keyframes heroIn {
+        from {
+          opacity: 0;
+          transform: translateY(35px) scale(0.97);
+          filter: blur(12px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0) scale(1);
+        }
+
+        50% {
+          transform: translateY(-25px) scale(1.08);
+        }
+      }
+
+      @keyframes gradientMove {
+        from {
+          background-position: 0%;
+        }
+
+        to {
+          background-position: 100%;
+        }
+      }
+
+      @keyframes bounce {
+        0%, 100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(8px);
+        }
+      }
+
+      @media (max-width: 850px) {
+        .cards,
+        .split {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          letter-spacing: -3px;
+        }
+
+        .dark-panel {
+          padding: 34px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <section class="hero">
+        <div class="orb one"></div>
+        <div class="orb two"></div>
+
+        <div class="hero-content">
+          <span class="badge">Frontend Internship Prep • Angular Focus</span>
+
+          <h1>
+            Building interfaces that feel
+            <span class="gradient-text">effortless.</span>
+          </h1>
+
+          <p class="subtitle">
+            I’m Robert — learning HTML, CSS, TypeScript and Angular by creating
+            clean, smooth and modern user experiences.
+          </p>
+
+          <a class="cta" href="https://github.com/robert-md-or" target="_blank">
+            View GitHub
+          </a>
+        </div>
+
+        <div class="scroll-hint">Scroll to explore ↓</div>
+      </section>
+
+      <section>
+        <div class="section-inner split">
+          <div class="reveal">
+            <p class="big-text">
+              From fundamentals to production-level thinking.
+            </p>
+          </div>
+
+          <div class="glass reveal delay-1">
+            <p class="muted">
+              My goal is not just to write code, but to understand how real
+              frontend applications are structured: components, state, API calls,
+              forms, routing and clean UI behavior.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-inner">
+          <h2 class="section-title reveal">Current focus.</h2>
+
+          <div class="cards">
+            <article class="card reveal delay-1">
+              <h3>Angular</h3>
+              <p>
+                Components, services, routing, reactive forms and application
+                structure.
+              </p>
+            </article>
+
+            <article class="card reveal delay-2">
+              <h3>TypeScript</h3>
+              <p>
+                Strong typing, interfaces, clean functions and safer frontend
+                logic.
+              </p>
+            </article>
+
+            <article class="card reveal delay-3">
+              <h3>UI Polish</h3>
+              <p>
+                Spacing, motion, responsiveness and interactions that make a page
+                feel premium.
+              </p>
+            </article>
+          </div>
+
+          <div class="dark-panel reveal">
+            <h2 class="section-title">The internship target.</h2>
+            <p>
+              Become ready for a Front-End Software Engineer internship by
+              building projects, explaining decisions clearly and improving every
+              week.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-inner split">
+          <div class="glass reveal">
+            <h2>Learning roadmap</h2>
+
+            <div class="timeline">
+              <div class="timeline-item reveal delay-1">
+                <span>01</span> HTML, CSS and responsive layouts
+              </div>
+
+              <div class="timeline-item reveal delay-2">
+                <span>02</span> JavaScript and TypeScript fundamentals
+              </div>
+
+              <div class="timeline-item reveal delay-3">
+                <span>03</span> Angular components, services and forms
+              </div>
+            </div>
+          </div>
+
+          <div class="reveal delay-2">
+            <p class="big-text">Small steps. Clean code. Real progress.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-section">
+        <button class="mystery-button" id="mysteryButton">
+          continue
+        </button>
+      </section>
+    </main>
+
+    <div class="experience-overlay" id="experienceOverlay">
+      <div class="experience-card">
+        <span class="experience-label">Frontend Internship Prep</span>
+        <h2>Focus. Build. Improve.</h2>
+        <p>
+          Every clean interface starts with fundamentals, patience, and attention
+          to detail.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const revealElements = document.querySelectorAll(".reveal");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        {
+          threshold: 0.18,
+        }
+      );
+
+      revealElements.forEach((element) => {
+        observer.observe(element);
+      });
+
+      window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+
+        document.querySelector(".orb.one").style.transform =
+          `translateY(${scrollY * 0.08}px)`;
+
+        document.querySelector(".orb.two").style.transform =
+          `translateY(${scrollY * -0.06}px)`;
+      });
+
+      const mysteryButton = document.getElementById("mysteryButton");
+      const experienceOverlay = document.getElementById("experienceOverlay");
+
+      mysteryButton.addEventListener("click", () => {
+        experienceOverlay.classList.add("active");
+
+        setTimeout(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }, 1800);
+
+        setTimeout(() => {
+          experienceOverlay.classList.remove("active");
+        }, 3200);
+      });
+    </script>
+  </body>
+</html>
