@@ -17,7 +17,7 @@ Do not rush. It is better to complete one module well than to read everything qu
 
 - [x] Read theory
 - [x] Learn terminology
-- [ ] Complete exercises
+- [x] Complete exercises
 - [ ] Complete mini challenge
 - [ ] Pass validation
 
