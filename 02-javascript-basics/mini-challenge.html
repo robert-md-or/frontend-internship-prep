@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Filter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 48px 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+
+    #filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    #filters button {
+      padding: 8px 18px;
+      border: 1px solid #d2d2d7;
+      border-radius: 8px;
+      background: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    #filters button:hover {
+      border-color: #0071e3;
+      color: #0071e3;
+    }
+
+    #filters button.active {
+      background: #0071e3;
+      color: #fff;
+      border-color: #0071e3;
+    }
+
+    #count {
+      font-size: 14px;
+      color: #6e6e73;
+      margin-bottom: 24px;
+    }
+
+    #product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      max-width: 960px;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.04);
+    }
+
+    .product-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .product-price {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 8px;
+    }
+
+    .product-category {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .product-category.electronics {
+      background: #e8f0fe;
+      color: #0071e3;
+    }
+
+    .product-category.clothing {
+      background: #e6f4ea;
+      color: #34a853;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Products</h1>
+
+  <div id="filters">
+    <button class="active" onclick="filterProducts('all')">All</button>
+    <button onclick="filterProducts('electronics')">Electronics</button>
+    <button onclick="filterProducts('clothing')">Clothing</button>
+  </div>
+
+  <p id="count"></p>
+  <div id="product-list"></div>
+
+  <script>
+    const products = [
+      { name: 'Laptop', price: 999, category: 'electronics' },
+      { name: 'T-Shirt', price: 25, category: 'clothing' },
+      { name: 'Phone', price: 699, category: 'electronics' },
+      { name: 'Jeans', price: 59, category: 'clothing' },
+      { name: 'Headphones', price: 149, category: 'electronics' },
+      { name: 'Sneakers', price: 89, category: 'clothing' },
+      { name: 'Tablet', price: 349, category: 'electronics' }
+    ];
+
+    function renderProducts(list) {
+      const container = document.getElementById('product-list');
+      const count = document.getElementById('count');
+
+      container.innerHTML = '';
+      count.textContent = 'Showing ' + list.length + ' products';
+
+      list.forEach(function(product) {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        card.innerHTML =
+          '<p class="product-name">' + product.name + '</p>' +
+          '<p class="product-price">$' + product.price + '</p>' +
+          '<span class="product-category ' + product.category + '">' + product.category + '</span>';
+
+        container.appendChild(card);
+      });
+    }
+
+    function filterProducts(category) {
+      const buttons = document.querySelectorAll('#filters button');
+      buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      if (category === 'all') {
+        renderProducts(products);
+      } else {
+        const filtered = products.filter(function(p) {
+          return p.category === category;
+        });
+        renderProducts(filtered);
+      }
+    }
+
+    renderProducts(products);
+  </script>
+
+</body>
+</html>
