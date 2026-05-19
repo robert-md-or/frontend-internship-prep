@@ -15,8 +15,8 @@ Do not rush. It is better to complete one module well than to read everything qu
 
 ## Module 01 — Internet, HTML, CSS
 
-- [ ] Read theory
-- [ ] Learn terminology
+- [x] Read theory
+- [x] Learn terminology
 - [ ] Complete exercises
 - [ ] Complete mini challenge
 - [ ] Pass validation
